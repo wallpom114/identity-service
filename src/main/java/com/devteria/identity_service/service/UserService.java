@@ -2,6 +2,7 @@ package com.devteria.identity_service.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,16 +51,15 @@ public class UserService {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.USER.name());
+        // HashSet<String> roles = new HashSet<>();
+        // roles.add(Role.USER.name());
 
         // user.setRoles(roles);
 
-        // user.setUsername(request.getUsername());
-        // user.setPassword(request.getPassword());
-        // user.setFirstName(request.getFirstName());
-        // user.setLastName(request.getLastName());
-        // user.setDob(request.getDob());
+        var role = roleRepository.findById(Role.USER.name())
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
+        ;
+        user.setRoles(new HashSet<>(Set.of(role)));
         return userMapper.toUserResponse(userRepository.save(user));
 
     }
@@ -98,7 +98,9 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')") // nếu dùng hasRole thì nó tự thêm prefix là ROLE_ vào trước
+    // @PreAuthorize("hasAuthority('ROLE_ADMIN')") // nếu dùng hasAuthority thì phải
+    // ghi đúng giống như trong scope
     public List<UserResponse> getAllUsers() {
         log.info("getAllUsers called - only ADMIN role can access this method");
         return userRepository.findAll().stream()
