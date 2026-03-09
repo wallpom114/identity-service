@@ -1,8 +1,5 @@
 package com.devteria.identity_service.dto.request;
 
-import java.time.LocalDate;
-
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,14 +12,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserCreationRequest {
-    @Size(min = 3, message = "USERNAME_INVALID")
-    String username;
-    String email;
-    @Size(min = 8, message = "PASSWORD_INVALID")
-    String password;
-    String firstName;
-    String lastName;
-    LocalDate dob;
+public class LogoutRequest {
+    String token;
 
 }

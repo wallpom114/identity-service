@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devteria.identity_service.dto.request.ApiResponse;
 import com.devteria.identity_service.dto.request.AuthenticationRequest;
 import com.devteria.identity_service.dto.request.IntrospectRequest;
+import com.devteria.identity_service.dto.request.LogoutRequest;
 import com.devteria.identity_service.dto.response.AuthenticationResponse;
 import com.devteria.identity_service.dto.response.IntrospectResponse;
 import com.devteria.identity_service.service.AuthenticationService;
@@ -51,5 +52,18 @@ public class AuthenticationController {
         return ApiResponse.<IntrospectResponse>builder()
                 .result(result)
                 .build();
+    }
+
+    @PostMapping("/logout")
+    ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        return ApiResponse.<Void>builder().result(null).build();
+    }
+
+    @PostMapping("/forgot-password")
+    ApiResponse<Void> forgotPassword(
+            @RequestBody com.devteria.identity_service.dto.request.ForgotPasswordRequest request) {
+        authenticationService.requestPasswordReset(request.getEmail());
+        return ApiResponse.<Void>builder().result(null).build();
     }
 }

@@ -1,8 +1,9 @@
 package com.devteria.identity_service.exception;
 
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+
+import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
@@ -15,7 +16,8 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     USER_NOT_FOUND(1007, "User not found", HttpStatus.NOT_FOUND),
     USER_NOT_NULL(1008, "User ID must not be null or empty", HttpStatus.BAD_REQUEST),
-    UNAUTHORIZED(1009, "you don't have permission", HttpStatus.FORBIDDEN)
+    UNAUTHORIZED(1009, "you don't have permission", HttpStatus.FORBIDDEN),
+    ROLE_NOT_FOUND(1010, "Role not found", HttpStatus.NOT_FOUND)
 
     ;
 
@@ -28,6 +30,5 @@ public enum ErrorCode {
         this.message = message;
         this.statusCode = statusCode;
     }
-
 
 }
